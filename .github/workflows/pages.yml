@@ -7,11 +7,16 @@ on:
     paths:
       - 'rcsu-election-source.zip'
       - 'config.js'
+      - 'SETUP.md'
+      - 'supabase/**'
+      - 'assets/**'
+      - 'index.html'
+      - 'tools/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -27,19 +32,36 @@ jobs:
         uses: actions/checkout@v4
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
-      - name: Extract application bundle
+      - name: Refresh source archive and publish editable source files
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           test -s rcsu-election-source.zip
           test -s config.js
+          test -s SETUP.md
           mkdir -p extracted site
           unzip -q rcsu-election-source.zip -d extracted
-          test -f extracted/index.html
-          test -f extracted/assets/app.js
-          cp extracted/index.html site/
+          cp config.js extracted/config.js
+          cp SETUP.md extracted/SETUP.md
+          mkdir -p extracted/supabase/migrations
+          cp supabase/config.toml extracted/supabase/config.toml
+          cp supabase/migrations/20261120125500_add_election_fk_indexes.sql extracted/supabase/migrations/
+          rm -f extracted/README.md README.md
+          rm -f rcsu-election-source.zip
+          (cd extracted && zip -qr ../rcsu-election-source.zip .)
+          cp -a extracted/. .
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if ! git diff --cached --quiet; then
+            git commit -m "Refresh election source bundle and publish source files"
+            git push origin HEAD:main
+          fi
+          cp index.html site/index.html
           cp config.js site/config.js
-          cp -R extracted/assets site/
-          cp extracted/.nojekyll site/.nojekyll
+          cp -R assets site/assets
+          cp .nojekyll site/.nojekyll
           echo "Published website files:"
           find site -maxdepth 3 -type f -printf '%p (%s bytes)\n' | sort
       - name: Upload Pages artifact
