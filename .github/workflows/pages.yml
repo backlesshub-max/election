@@ -6,7 +6,6 @@ on:
     paths:
       - 'rcsu-election-source.zip'
       - '.github/workflows/pages.yml'
-      - 'README.md'
   workflow_dispatch:
 
 permissions:
