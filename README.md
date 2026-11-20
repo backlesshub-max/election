@@ -1,30 +1,46 @@
 # Raha College Student Union Election 2026–2027
 
 **Developer:** Reinhardson Sangma  
-**Style:** Claymorphism · mobile-first · red / navy / gold  
-**Deployment:** GitHub Pages (Actions) · Supabase Edge Functions + PostgreSQL
+**Design:** Claymorphism · mobile-first · deep red / navy / white / gold  
+**Stack:** HTML, CSS, vanilla JavaScript · Supabase Edge Function · PostgreSQL · Python preflight tool
 
-This repository contains the complete election portal source in **[rcsu-election-source.zip](./rcsu-election-source.zip)**. The Pages workflow extracts the source archive and publishes the static app. The ZIP includes the frontend, nine poster portrait crops, SQL migration, authenticated Edge Function, Python CSV validator, and full setup guide.
+## Project package
 
-## Important deployment status
+The complete source bundle is provided separately as **`rcsu-election-source.zip`** in the project hand-off. Upload that ZIP to the root of this repository to add the application source and trigger the GitHub Pages workflow.
 
-The project is scaffolded, **not yet connected to a Supabase project**. Before real voting, an administrator must configure Supabase, run the SQL migration, deploy the Edge Function, create and allow-list the admin Auth user, import the official voter workbook privately, and have the election committee verify candidate name spellings and eligibility.
+The archive contains:
+- Responsive election website and claymorphism UI.
+- Nine individual candidate portrait crops from the supplied poster.
+- Nine English election positions and editable candidate data.
+- Supabase SQL migration and JWT-protected Edge Function.
+- Private Excel voter import workflow and Python CSV preflight utility.
+- Full implementation, security, and deployment guide.
 
-1. In **Settings → Pages → Build and deployment**, select **GitHub Actions**.
-2. Download and extract rcsu-election-source.zip to configure Supabase and follow the included README.md.
-3. Put only the Supabase project URL and publishable key in config.js. Never put a secret or service-role key in browser code.
-4. Run the included SQL migration, deploy the election-api Edge Function, create and allow-list the election admin, then import the Excel voter register from the secured admin panel.
+## Repository deployment
 
-## Security design
+1. Download the source ZIP from the project hand-off and upload `rcsu-election-source.zip` to the root of this repository.
+2. In **Settings → Pages → Build and deployment**, choose **GitHub Actions**.
+3. The workflow extracts the ZIP and publishes the static website to GitHub Pages.
+4. Extract the same ZIP locally and follow its `README.md` before attempting a live election.
 
-Voter eligibility records are held in a private PostgreSQL schema. Ballot rows contain no voter foreign key or voter identifier. A one-use ticket temporarily authorises voting; its voter link is deleted in the same database transaction that records the anonymous ballot. Elevated operations are available only through the JWT-protected Edge Function after admin allow-list verification.
+## Backend status
 
-The attached workbook is **not** stored in this repository. Public repository files contain code and candidate poster crops only. Signatures and an all-rights-reserved notice identify authorship but cannot technically prevent copying of a public repository; use GitHub's private-repository setting for access control.
+**The app is not yet connected to a Supabase project and is not ready for real voting.** Before polling, create/configure the Supabase project, run the SQL migration, deploy the Edge Function, create an Auth administrator and add that user's UUID to the private admin allow-list, import the official voter register privately, and verify candidate spellings and eligibility with the election committee.
 
-## Election positions
+Only the Supabase project URL and publishable key belong in the browser's `config.js`. Never put a Supabase secret/service-role key in the repository or frontend.
+
+## Privacy model
+
+Voter eligibility records and anonymous ballots are separate. Ballot rows do not contain voter IDs or foreign keys. A short-lived one-use ticket temporarily authorises the kiosk ballot; the temporary voter-to-ticket link is removed in the same database transaction that writes the anonymous ballot and marks the voter as voted. Elevated database actions are restricted to the authenticated administrator through the Edge Function.
+
+The attached Excel workbook is intentionally **not** stored in GitHub. Student voter data is imported from the admin panel directly into the private database.
+
+## Candidate posts
 
 President · Vice President · General Secretary · Assistant General Secretary · Games Secretary · Cultural Secretary · Magazine Secretary · Girls’ Common Room Secretary · Boys’ Common Room Secretary.
 
-Names are transliterations from the supplied Assamese poster and must be confirmed by the committee before polling.
+Candidate names are transliterations from the Assamese poster. The election committee must confirm their English spellings and all candidate-to-post assignments before voting opens.
 
-See the extracted archive's README.md for full setup, deployment, import, operations, privacy, and testing instructions.
+## Attribution and copying
+
+Project source files include the developer signature **Reinhardson Sangma**, and the source bundle carries an all-rights-reserved notice. A public repository can still be viewed, downloaded, or forked; a signature or licence notice cannot technically prevent copying. Make this repository private under GitHub settings if access restriction is required.
