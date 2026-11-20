@@ -33,24 +33,24 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
       - name: Refresh source archive and publish editable source files
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           test -s rcsu-election-source.zip
           test -s config.js
           test -s SETUP.md
-          mkdir -p extracted site
-          unzip -q rcsu-election-source.zip -d extracted
-          cp config.js extracted/config.js
-          cp SETUP.md extracted/SETUP.md
-          mkdir -p extracted/supabase/migrations
-          cp supabase/config.toml extracted/supabase/config.toml
-          cp supabase/migrations/20261120125500_add_election_fk_indexes.sql extracted/supabase/migrations/
-          rm -f extracted/README.md README.md
+          tmp_dir="$(mktemp -d)"
+          mkdir -p site
+          unzip -q rcsu-election-source.zip -d "$tmp_dir"
+          cp config.js "$tmp_dir/config.js"
+          cp SETUP.md "$tmp_dir/SETUP.md"
+          mkdir -p "$tmp_dir/supabase/migrations"
+          cp supabase/config.toml "$tmp_dir/supabase/config.toml"
+          cp supabase/migrations/20261120125500_add_election_fk_indexes.sql "$tmp_dir/supabase/migrations/"
+          rm -f "$tmp_dir/README.md" README.md
           rm -f rcsu-election-source.zip
-          (cd extracted && zip -qr ../rcsu-election-source.zip .)
-          cp -a extracted/. .
+          (cd "$tmp_dir" && zip -qr "$GITHUB_WORKSPACE/rcsu-election-source.zip" .)
+          cp -a "$tmp_dir"/. .
+          rm -rf "$tmp_dir" extracted
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
