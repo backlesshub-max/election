@@ -1,0 +1,13 @@
+# RCSU Election | Reinhardson Sangma
+.env
+.env.*
+!.env.example
+supabase/.temp/
+.DS_Store
+Thumbs.db
+*.xlsx
+*.xls
+*.csv
+private-data/
+__pycache__/
+*.py[cod]

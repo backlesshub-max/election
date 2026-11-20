@@ -1,0 +1,17 @@
+{
+  "project": "Raha College Student Union Election 2026-2027",
+  "prepared_by": "Reinhardson Sangma",
+  "source": "Candidate poster provided by the project requester on 2026-11-20",
+  "note": "Names are transliterations from Assamese lettering. Confirm Roman spellings with the election committee before polling.",
+  "candidates": [
+    {"file":"candidate-01.jpg","position":"President","name":"Pallab Nath"},
+    {"file":"candidate-02.jpg","position":"Vice President","name":"Ahikta Chahuma"},
+    {"file":"candidate-03.jpg","position":"General Secretary","name":"Chaniya Chultana"},
+    {"file":"candidate-04.jpg","position":"Cultural Secretary","name":"Puja Das"},
+    {"file":"candidate-05.jpg","position":"Magazine Secretary","name":"Jubi Bora"},
+    {"file":"candidate-06.jpg","position":"Girls’ Common Room Secretary","name":"Shivani Bangthai"},
+    {"file":"candidate-07.jpg","position":"Games Secretary","name":"Animesh Bora"},
+    {"file":"candidate-08.jpg","position":"Boys’ Common Room Secretary","name":"Rupjyoti Gogoi"},
+    {"file":"candidate-09.jpg","position":"Assistant General Secretary","name":"Santosh Gaonkhoya"}
+  ]
+}
