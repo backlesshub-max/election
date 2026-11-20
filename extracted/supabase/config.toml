@@ -1,5 +1,0 @@
-# Supabase CLI configuration | Maintainer: Reinhardson Sangma
-project_id = "vuiesegeutsegvaabpmo"
-
-[functions.election-api]
-verify_jwt = true
