@@ -1,4 +1,4 @@
-# GitHub Pages workflow | Maintainer: Reinhardson Sangma
+# RCSU Election | Maintainer: Reinhardson Sangma
 name: Deploy RCSU Election Portal
 
 on:
@@ -24,14 +24,22 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Set up GitHub Pages
+      - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
-      - name: Extract portal source
+      - name: Extract application bundle
         run: |
-          test -f rcsu-election-source.zip
-          mkdir -p site
-          unzip -q rcsu-election-source.zip -d site
-          test -f site/index.html
+          set -euo pipefail
+          test -s rcsu-election-source.zip
+          mkdir -p extracted site
+          unzip -q rcsu-election-source.zip -d extracted
+          test -f extracted/index.html
+          test -f extracted/config.js
+          test -f extracted/assets/app.js
+          cp extracted/index.html extracted/config.js site/
+          cp -R extracted/assets site/
+          cp extracted/.nojekyll site/.nojekyll
+          echo "Published website files:"
+          find site -maxdepth 3 -type f -printf '%p (%s bytes)\n' | sort
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
