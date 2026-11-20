@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - 'rcsu-election-source.zip'
+      - 'config.js'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -30,12 +31,13 @@ jobs:
         run: |
           set -euo pipefail
           test -s rcsu-election-source.zip
+          test -s config.js
           mkdir -p extracted site
           unzip -q rcsu-election-source.zip -d extracted
           test -f extracted/index.html
-          test -f extracted/config.js
           test -f extracted/assets/app.js
-          cp extracted/index.html extracted/config.js site/
+          cp extracted/index.html site/
+          cp config.js site/config.js
           cp -R extracted/assets site/
           cp extracted/.nojekyll site/.nojekyll
           echo "Published website files:"
